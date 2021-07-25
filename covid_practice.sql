@@ -177,6 +177,25 @@ select * from covid_vaccinations;
 
 -- ------------------------ DATA EXPLORATION --------------------
 
+-- total death globally
+select max(total_cases) as Total_Cases, 
+	max(total_deaths) as Total_Deaths, 
+    max(total_deaths)/max(total_cases)*100 as Death_Rate
+from covid_death
+where continent not in ('');
+
+-- total population
+with Total_Population (Locaion, Population) as 
+(
+select location, max(population)
+from covid_death
+where continent in ('') -- and location not in ('World')
+group by location
+order by 2 desc
+)
+select sum(Population) as TotalPopulation
+from Total_Population;covid_deathiso_code
+
 -- sort by total deaths (per country)
 select location, max(total_deaths) as TotalDeath 
 from covid_death
